@@ -27,14 +27,14 @@ You will need to first set up the ODBC connection to use the SSE with the sample
 3. Create an ODBC Connection:
 
 Once the ODBC connection is created the sample app which you can download [here](https://s3.amazonaws.com/dpi-sse/DPI+-+Qlik+Sense+AAI+and+Python+Environment+Setup.pdf) should work after starting the analytic connection
-[1](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc1.png)
-[2](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc2.png)
-[3](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc3.png)
-[4](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc4.png)
+![1](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc1.png)
+![2](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc2.png)
+![3](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc3.png)
+![4](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc4.png)
 
 ## Formula Parameters
 It is of course possible to use this SSE with any ODBC connection, you simply need to change the formulas/variables in the app:
-[Formula](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/formula.png)
+![Formula](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/formula.png)
 
 **SQL Statement:** This should be an SQL query
 **Column From SQL:** This is the column number you want to have returned from the SQL query table result (starts at 0 for the first column)
