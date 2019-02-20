@@ -17,7 +17,7 @@ Host: localhost
 Port: 50099
  ```    
 7. Import the following app into Qlik Sense: [Live Native.qvf](https://github.com/rileymd88/data/raw/master/QlikSenseAAILive/Live%20Native.qvf)
-8. Start the analytic connection by starting a new command prompt and entering (workon Live) and then  ```python __main__.py ```
+8. Start the analytic connection by starting a new command prompt and entering  ```workon Live ``` and then  ```python __main__.py ```
 
 ## Setting Up The ODBC Connection Needed to Work With The Sample App
 You will need to first set up the ODBC connection to use the SSE with the sample app:
