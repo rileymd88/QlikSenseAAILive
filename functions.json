@@ -1,0 +1,28 @@
+{
+    "Functions" : [
+        {
+            "Id" : 0,
+            "Name" : "LiveSQLDimension",
+            "Type" : 2,
+            "ReturnType": 0,
+            "Params" : {
+                "SQL": 0,
+                "column": 0,
+                "connectionString": 0,
+                "indexField": 0
+                }
+        },
+        {
+            "Id" : 1,
+            "Name" : "LiveSQLMeasure",
+            "Type" : 2,
+            "ReturnType": 0,
+            "Params" : {
+                "SQL": 0,
+                "column": 0,
+                "connectionString": 0,
+                "indexField": 0
+                }
+        }
+    ]
+}
