@@ -1,52 +1,39 @@
-# Example: Hello World
-This example demonstrates some very simple functionality of the SSE protocol.
+# SSE Live
+This Qlik Sense SSE shows how it is possible to create hypercubes on the fly completely based off live SQL queries to any ODBC data source. 
+**Please note that this is a very early beta innovation project not meant for production use!**
 
-We have tried to provide well documented code that you can easily follow along with. If something is unclear, please let us know so that we can update and improve our documentation. In this file, we guide you through a few key points in the implementation that are worth clarifying for this particular example.
+## SSE Installation Steps
+First ensure you have followed Daniel Pilla's python environment setup found [here](https://s3.amazonaws.com/dpi-sse/DPI+-+Qlik+Sense+AAI+and+Python+Environment+Setup.pdf)
 
-## Content
-* [Script evaluation](#script-evaluation)
-* [Defined functions](#defined-functions)
-* [Qlik documents](#qlik-documents)
-* [Run the example!](#run-the-example)
+1. Create a new folder called Live (mkdir Live)
+2. Copy the contents of the following ZIP into the folder created in step 2: [QlikSenseAAILive.zip](https://github.com/rileymd88/QlikSenseAAILive/archive/master.zip)
+3. Open a command prompt and create a new virtual environment called Live (mkvirtualenv Live)
+4. Ensure you are in the directory of the folder created in step two and type the following command (setprojectdir .)
+5. Enter the following command (pip install -r requirements.txt)
+6. Create the analytic connection with the following properties:
+    Name: PythonLive
+    Host: localhost
+    Port: 50099
+7. Import the following app into Qlik Sense: [Live](https://github.com/rileymd88/data/raw/master/QlikSenseAAILive/Live%20Native.qvf)
+8. Start the analytic connection by starting a new command prompt and entering (workon Live) and then (python __main__.py)
 
-## Script evaluation
-Script evaluation is enabled in this example but only string data is handled by the plugin. That meaning, the only script functions supported by the plugin are `ScriptEvalStr`, `ScriptAggrStr`, `ScriptEvalExStr` and `ScriptAggrExStr`. The plugin will throw an error if any other data type than string is sent as parameter of the last two mentioned functions.  
+## Setting Up The ODBC Connection Needed to Work With The Sample App)
+You will need to first set up the ODBC connection to use the SSE with the sample app:
 
-The given script is evaluated with the python method `eval`. `eval` evaluates a python expression and does not work very well with more complex scripts. See documentation of the method `eval` [here](https://docs.python.org/3/library/functions.html#eval). For tensor and scalar functions the script is evaluated row wise and for aggregations the script is evaluated once after all data is retrieved.  
+1. Download the AdventureWorks2017 SQL database from here https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
+2. Import the SQL database using SQL Server Management Studio https://stackoverflow.com/questions/1535914/import-bak-file-to-a-database-in-sql-server
+3. Create an ODBC Connection:
 
-The parameters sent from Qlik are stored in a _list_ called `args` where the first element corresponds to the first parameter. Note how the function types affect the list storing the given parameters, and hence the script itself, when the script is evaluated:
-* If the function type is an aggregation the type of `args[0]` is a list containing all rows of the first parameter.
-* If the function type is scalar or tensor, the type of `args[0]` will be a single string representing the first row of the first parameter.
+Once the ODBC connection is created the sample app which you can download [here](https://s3.amazonaws.com/dpi-sse/DPI+-+Qlik+Sense+AAI+and+Python+Environment+Setup.pdf) should work after starting the analytic connection
+[1](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc1.png)
+[2](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc2.png)
+[3](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc3.png)
+[4](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc4.png)
 
-## Defined functions
-In this plugin we have a couple of pre-defined functions, which cannot be modified from the UI. The function definitions are located in the  JSON file and include the following information:
+## Formula Parameters
+It is of course possible to use this SSE with any ODBC connection, you simply need to change the formulas/variables in the app:
+[Formula](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/formula.png)
 
-| __Function Name__ | __ID__ | __Type__ | __ReturnType__ | __Parameters__ |
-| ----- | ----- | ----- | ----- | ----- |
-| HelloWorld | 0 | 2 (tensor) | 0 (string) | __name:__ 'str1', __type:__ 0 (string) |
-| HelloWorldAggr | 1 | 1 (aggregation)  | 0 (string) | __name:__ 'str1', __type:__ 0 (string) |
-| Cache | 2 | 2 (tensor) | 0 (string) | __name:__ 'str1', __type:__ 0 (string) |
-| NoCache | 3 | 2 (tensor) | 0 (string) | __name:__ 'str1', __type:__ 0 (string) |
-| EchoTable_3 | 4 | 2 (tensor) | 0 (string) | __name:__ 'col1', __type:__ 0 (string); __name:__ 'col2', __type:__ 0 (string); __name:__ 'col3', __type:__ 0 (string) |
-
-Both `HelloWorld` and `EchoTable_3` returns the same data as received, the difference is the number of columns. The latter is used to demonstrate the `Load ... Extension ...` syntax in the Qlik load script where you can return a table of multiple columns using SSE.
-
-The `HelloWorldAggr` function is aggregating all rows to a single string.
-
-The `Cache` and `NoCache` functions demonstrates how caching works by adding a date-time stamp in the end of each string value on each row. Caching is enabled by default and you can disable it by sending a header with metadata including the `qlik-cache` key set to `no-store`. In the example app the user will see that the date-time stamps will be updated for the `NoCache` function for all selections, but only for new selections for the `Cache` function.
-
-``` python
-md = (('qlik-cache', 'no-store'),)
-context.send_initial_metadata(md)
-```
-
-
-## Qlik documents
-We provide example documents for Qlik Sense (SSE_Hello_World.qvf) and QlikView (SSE_Hello_World.qvw).
-
-There are a number of examples in the sheets demonstrating the same simple functionality using script functions as well as defined functions.
-
-In the Qlik load script there is an example of the `Load ...  Extension ...` syntax for a table load using SSE. Since the `EchoTable_3` function, used in the load statement, does not send a `TableDescription` the returned columns have the default names _Field1_, _Field2_ and _Field3_, which are then renamed in the load statement. There are also examples of using SSE expressions within a regular load. In that case the SSE call is treated as a scalar or aggregation and only one column can be returned.
-
-## Run the example!
-To run this example, follow the instructions in [Getting started with the Python examples](../GetStarted.md).
+**SQL Statement:** This should be an SQL query
+**Column From SQL:** This is the column number you want to have returned from the SQL query table result (starts at 0 for the first column)
+**pyodbc Connection String:** This is the connection string needed to connect to the specific ODBC database. pyodbc simply forwards the connection string to the specific driver for each ODBC connection. For more information on connection string formats you can refer to the link here: https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-databases
