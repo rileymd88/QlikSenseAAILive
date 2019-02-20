@@ -5,19 +5,21 @@ This Qlik Sense SSE shows how it is possible to create hypercubes on the fly com
 ## SSE Installation Steps
 First ensure you have followed Daniel Pilla's python environment setup found [here](https://s3.amazonaws.com/dpi-sse/DPI+-+Qlik+Sense+AAI+and+Python+Environment+Setup.pdf)
 
-1. Create a new folder called Live (mkdir Live)
+1. Create a new folder called Live  ```mkdir Live ```
 2. Copy the contents of the following ZIP into the folder created in step 2: [QlikSenseAAILive.zip](https://github.com/rileymd88/QlikSenseAAILive/archive/master.zip)
-3. Open a command prompt and create a new virtual environment called Live (mkvirtualenv Live)
-4. Ensure you are in the directory of the folder created in step two and type the following command (setprojectdir .)
-5. Enter the following command (pip install -r requirements.txt)
+3. Open a command prompt and create a new virtual environment called Live  ```mkvirtualenv Live ```
+4. Ensure you are in the directory of the folder created in step two and type the following command  ```setprojectdir . ```
+5. Enter the following command  ```pip install -r requirements.txt ```
 6. Create the analytic connection with the following properties:
-    Name: PythonLive
-    Host: localhost
-    Port: 50099
-7. Import the following app into Qlik Sense: [Live](https://github.com/rileymd88/data/raw/master/QlikSenseAAILive/Live%20Native.qvf)
-8. Start the analytic connection by starting a new command prompt and entering (workon Live) and then (python __main__.py)
+ ```
+Name: PythonLive
+Host: localhost
+Port: 50099
+ ```    
+7. Import the following app into Qlik Sense: [Live Native.qvf](https://github.com/rileymd88/data/raw/master/QlikSenseAAILive/Live%20Native.qvf)
+8. Start the analytic connection by starting a new command prompt and entering (workon Live) and then  ```python __main__.py ```
 
-## Setting Up The ODBC Connection Needed to Work With The Sample App)
+## Setting Up The ODBC Connection Needed to Work With The Sample App
 You will need to first set up the ODBC connection to use the SSE with the sample app:
 
 1. Download the AdventureWorks2017 SQL database from here https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
