@@ -54,8 +54,7 @@ class ExtensionService(SSE.ConnectorServicer):
         :return: Mapping of function id and implementation
         """
         return {
-            0: '_liveSQLDimension',
-            1: '_liveSQLMeasure'
+            0: '_liveSQL'
         }
 
     @staticmethod
@@ -74,8 +73,9 @@ class ExtensionService(SSE.ConnectorServicer):
     """
     Implementation of added functions.
     """
+
     @staticmethod
-    def _liveSQLDimension(request, context):    
+    def _liveSQL(request, context):    
         # Disable cache
         md = (('qlik-cache', 'no-store'),)
         context.send_initial_metadata(md)
@@ -104,55 +104,15 @@ class ExtensionService(SSE.ConnectorServicer):
                     print(indexField) 
         conn = pyodbc.connect(connectionString)            
         data = pd.read_sql(sqlQuery,conn)
-        print(data)
         data = data.applymap(str)
+        columnName = data.columns[column]
+        commaReplace = "COMMAREPLACE"
+        data.replace({"'": commaReplace}, inplace=True, regex=True)
+        print(data)
         column = data.iloc[:, column].values.tolist()
         print(column)
         finalList = []
-        finalList.append('Pick([' + indexField + '],' + str(tuple(column))[1:]) 
-        print(finalList)
-        # Create an iterable of dual with the result
-        duals = iter([[SSE.Dual(strData=d)] for d in finalList])
-
-        # Yield the row data as bundled rows
-        yield SSE.BundledRows(rows=[SSE.Row(duals=d) for d in duals])
-    
-    @staticmethod
-    def _liveSQLMeasure(request, context):    
-        # Disable cache
-        md = (('qlik-cache', 'no-store'),)
-        context.send_initial_metadata(md)
-        sqlQuery = None
-        column = None
-        connectionString = None
-        indexField = None
-
-        for request_rows in request:
-            # iterate over each request row (contains rows, duals, numData)
-
-            # pull duals from each row, and the numData from duals
-            for row in request_rows.rows:
-                print(row)
-                # get name of dimension
-                if not sqlQuery:
-                    sqlQuery = [d.strData for d in row.duals][0]
-                # get list of static filters
-                if not column:
-                    column = int([d.strData for d in row.duals][1])
-                if not connectionString:
-                    connectionString = [d.strData for d in row.duals][2]
-                    print(connectionString)
-                if not indexField:
-                    indexField = [d.strData for d in row.duals][3]    
-                    print(indexField) 
-        conn = pyodbc.connect(connectionString)            
-        data = pd.read_sql(sqlQuery,conn)
-        print(data)
-        data = data.applymap(str)
-        column = data.iloc[:, column].values.tolist()
-        print(column)
-        finalList = []
-        finalList.append("Pick(FieldIndex('"+ indexField + "',[" + indexField + "])," + str(tuple(column))[1:]) 
+        finalList.append("Pick(FieldIndex('"+ indexField + "',[" + indexField + "])," + str(tuple(column))[1:].replace(commaReplace, "''") + " /**" + columnName + "**/") 
         print(finalList)
         # Create an iterable of dual with the result
         duals = iter([[SSE.Dual(strData=d)] for d in finalList])
