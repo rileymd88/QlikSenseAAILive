@@ -26,7 +26,7 @@ You will need to first set up the ODBC connection to use the SSE with the sample
 2. Import the SQL database using SQL Server Management Studio https://stackoverflow.com/questions/1535914/import-bak-file-to-a-database-in-sql-server
 3. Create an ODBC Connection:
 
-Once the ODBC connection is created the sample app which you can download [here](https://s3.amazonaws.com/dpi-sse/DPI+-+Qlik+Sense+AAI+and+Python+Environment+Setup.pdf) should work after starting the analytic connection
+Once the ODBC connection is created the sample app which you can download [here](https://github.com/rileymd88/QlikSenseAAILive/raw/master/Live%20Native.qvf) should work after starting the analytic connection
 
 ![1](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc1.png)
 ![2](https://raw.githubusercontent.com/rileymd88/data/master/QlikSenseAAILive/odbc2.png)
