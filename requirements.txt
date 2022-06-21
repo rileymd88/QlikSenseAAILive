@@ -3,7 +3,7 @@ chardet==3.0.4
 grpcio==1.15.0
 grpcio-tools==1.15.0
 idna==2.8
-numpy==1.15.2
+numpy==1.22.0
 pandas==0.23.4
 protobuf==3.6.1
 pyodbc==4.0.24
